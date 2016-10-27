@@ -10,13 +10,18 @@
 	<body>
 <nav class="blue darken-4">
 	<div class="container">
-	    <div class="nav-wrapper">
-	      <ul id="nav-mobile" class="left">
-	        <li><a href="" class="waves-effect waves-light">Log In</a></li>
-	        <li><a href="http://localhost/PHPweblab/auth/signup.php" class="waves-effect waves-light">Register</a></li>
-	      </ul>
-	    </div>
-    </div>
-  </nav>
+		<div class="nav-wrapper">
+			<ul id="nav-mobile" class="left">
+				<?php if (isset($_SESSION['username'])) : ?>
+					<li>Hello, <?= $_SESSION['username'] ?></li>
+					<li><a href=".?action=logout" class="waves-effect waves-light">Log out</a></li>
+				<?php else : ?>
+					<li><a href=".?action=login-form" class="waves-effect waves-light">Log In</a></li>
+					<li><a href=".?action=signup-form" class="waves-effect waves-light">Register</a></li>
+				<?php endif ?>
+			</ul>
+		</div>
+	</div>
+</nav>
 
 		

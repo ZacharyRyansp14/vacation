@@ -12,8 +12,8 @@
 	<div class="container">
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="left">
-	        <li><a href="" class="waves-effect waves-light">Log In</a></li>
-	        <li><a href="" class="waves-effect waves-light">Register</a></li>
+	        <li><a href="./auth/?action=login-form" class="waves-effect waves-light">Log In</a></li>
+	        <li><a href="./auth/?action=signup-form" class="waves-effect waves-light">Register</a></li>
 	      </ul>
 	    </div>
     </div>

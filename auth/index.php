@@ -1,61 +1,95 @@
-<?php session_start();
+<?php 
 
-//DELETE THIS
-//userid
-//username
-//hash
-//salt
+	require_once('../model/auth.php');
 
-//redirect if user is not logged in
-if ( !isloggedin() ) {
-	header( 'Location: login.php');
-}
+	$auth = new Auth();
 
-?>
+	if (isset($_REQUEST['action'])) $action = $_REQUEST['action'];
+	else $action = '';
+
+	switch ($action) {
+		default:
+			include '../view/header.php';
+			include '../view/footer.php';
+			break;
+
+		case 'login-form':
+			include '../view/login-form.php';
+			break;
+
+		case 'login':
+			$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+			$password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+			if ($auth->login($username, $password) == true) {
+				echo "LOGGED IN <br/>";
+				header('location: .');
+			} else {
+				echo "FAILURE";
+			}
+
+			break;
+
+		case 'logout':
+			$auth->logout();
+			header('location: .');
+			break;
+
+		case 'signup-form':
+			include '../view/signup-form.php';
+			break;
+
+		case 'signup':
+			$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+			$password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+			$cpassword = filter_input(INPUT_POST, 'cpassword', FILTER_SANITIZE_STRING);
+
+			if($password == '' || $username ==  ''){
+				$e ="Password and Username is Required";
+				include('../view/signup-form.php');
+				break;
+			} else{
+				if(strcmp($password, $cpassword) == 0){
+					if($auth->signup($username, $password) == true){
+						echo "signed up <br />";
+						$auth->login($username, $password);
+						header('location: .');
+						print_r($_SESSION);
+					} else {
+						$e = "Registration Error";
+						include('../view/signup-form.php');
+					}
+				break;
+				} else {
+					$e = "Passwords do not match";
+					include('../view/signup-form.php');
+					break;
+
+				}
+			}
+
+			break;
 
 
-<?php include '../view/header.php'; ?>
+		case 'vacation_add_form' :
+			include '../view/vacation_add_form.php'
+			break;
 
-<main>
-	<div class="container">
-		<div class="row">
-			<h1 class="col offset-m4">Hello &nbsp; <?php echo $_SESSION['username'];?>! </h1>
-		</div>
-	</div>
+		case 'vacation_add':
+			include 'vacation_add.php';
+			break;
 
-	<div class="container">
-		<div class="row">
-			<div class="col m4">
-				<div class="card">
-					<div class="card-content">
-						<span class="card-title">Congratulations!</span>
-						<p>
-							You have successfully logged into this page. <br><br>
-							Nothing left to do now but log out! <br><br>
-							Enjoy the Cat on the right!<br><br>
-						</p>
+		case 'vacation_edit_form' :
+			include '../view/vacation_edit_form.php'
 
-						<a href="logout.php" class="waves-effect waves-light btn">Log Out</a>
-					</div>
-				</div>
-			</div>
-			<div class="col m6">
-				<div class="card">
-					<div class="card-image">
-						<img src="../images/cat.png" />
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</main>
 
-<?php include '../view/footer.php'; ?>
+		case 'vacation_edit' :
+			include 'vaction_edit.php';
+			break;
 
-<?php
-
-function isloggedin () {
-	return isset( $_SESSION['username'] );
-}
+		case 'vacation_list':
+			include 'vacation_list.php';
+			break;
+	}
 
 ?>

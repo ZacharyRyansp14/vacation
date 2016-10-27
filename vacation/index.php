@@ -22,7 +22,7 @@ if ($action == 'list_vacation') {
 
 //get our thought and vacation data
 
-$vacation_id = filter_input(get_vacation_place($vacation_id);
+$vacation_id = filter_input(get_vacation_place($vacation_id));
 $vacations = get_vacation();
 $vacation_place = get_vacation_place($vacation_id);
 $vacation_review = get_vacation();
